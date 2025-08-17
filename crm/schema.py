@@ -285,7 +285,7 @@ class CreateOrder(graphene.Mutation):
             return CreateOrder(order=None, errors=errors)
 
         # Create order
-        order = Order.objects.create(
+        order = Order(
             customer=customer,
             order_date=order_date or timezone.now()
         )
