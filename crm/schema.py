@@ -324,7 +324,7 @@ class Mutation(graphene.ObjectType):
 from graphene_django.filter import DjangoFilterConnectionField
 from .models import Customer, Product, Order
 from .filters import CustomerFilter, ProductFilter, OrderFilter
-from .schema_mutations import Mutation  # Assuming you moved Task 2 mutations to schema_mutations.py
+from .schema_mutations import Mutation  # Assuming i moved Task 2 mutations to schema_mutations.py
 
 # Node-based types for filtering & pagination
 class CustomerNode(DjangoObjectType):

@@ -36,9 +36,6 @@ INSTALLED_APPS = [
     "graphhql_crm",
     "alx_backend_graphql_crm",
     "graphql",
-
-
-    "alx_backend_graphql_crm.apps.AlxBackendGraphqlCrmConfig",
 ]
 
 # GraphQL schema path
