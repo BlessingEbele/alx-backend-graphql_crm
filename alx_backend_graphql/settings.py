@@ -44,7 +44,7 @@ INSTALLED_APPS = [
 
 # GraphQL schema path
 GRAPHENE = {
-    "SCHEMA": "alx_backend_graphql_crm.schema.schema"
+    "SCHEMA": "graphql_crm.schema.schema"
 }
 
 MIDDLEWARE = [

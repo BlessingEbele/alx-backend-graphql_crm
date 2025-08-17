@@ -1,4 +1,20 @@
 import graphene
+
+import graphene
+
+class Query(graphene.ObjectType):
+    # Example field
+    hello = graphene.String(default_value="Hello from CRM app!")
+
+class Mutation(graphene.ObjectType):
+    # Example mutation
+    say_hello = graphene.String(name=graphene.String())
+
+    def resolve_say_hello(root, info, name):
+        return f"Hello {name}"
+
+
+
 from graphene_django import DjangoObjectType
 from .models import Customer, Product, Order
 from django.db import transaction
@@ -285,7 +301,7 @@ class CreateOrder(graphene.Mutation):
             return CreateOrder(order=None, errors=errors)
 
         # Create order
-        order = Order(
+        order = Order.objects.create(
             customer=customer,
             order_date=order_date or timezone.now()
         )
