@@ -15,6 +15,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Celery Config
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
+
 
 # Application definition
 
@@ -36,8 +40,18 @@ INSTALLED_APPS = [
     "graphhql_crm",
     "alx_backend_graphql_crm",
     "django_crontab",
+    "django_celery_beat",
     
 ]
+
+from celery.schedules import crontab
+
+CELERY_BEAT_SCHEDULE = {
+    "generate-crm-report": {
+        "task": "crm.tasks.generate_crm_report",
+        "schedule": crontab(day_of_week="mon", hour=6, minute=0),
+    },
+}
 
 CRONJOBS = [
     ('*/5 * * * *', 'crm.cron.log_crm_heartbeat'),
