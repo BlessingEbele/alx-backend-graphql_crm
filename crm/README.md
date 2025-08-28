@@ -1,73 +1,47 @@
-# CRM Project - Celery Setup with Celery Beat
+# CRM Project - Celery Report Setup
 
-This project uses **Celery** and **Celery Beat** to generate a **weekly CRM report** that summarizes:
-
-* Total number of customers
-* Total number of orders
-* Total revenue
-
-The report is logged to `/tmp/crm_report_log.txt` every **Monday at 06:00 AM**.
+This guide explains how to set up and run Celery with Celery Beat to generate weekly CRM reports.
 
 ---
 
-## 🚀 Setup Instructions
+## 1. Install Redis and Dependencies
 
-### 1. Install Dependencies
-
-Ensure you have **Redis**, Celery, and Django Celery Beat installed.
+* Install Redis on Ubuntu/Debian:
 
 ```bash
-# Install Redis (Ubuntu/Debian example)
 sudo apt update
-sudo apt install redis-server -y
+sudo apt install redis-server
+```
 
-# Start Redis
+* Start Redis:
+
+```bash
 sudo service redis-server start
+```
 
-# Install Python dependencies
+* Verify Redis is running:
+
+```bash
+redis-cli ping
+```
+
+It should return:
+
+```
+PONG
+```
+
+* Install required Python dependencies:
+
+```bash
 pip install -r requirements.txt
 ```
 
-Make sure `requirements.txt` includes:
-
-```
-celery
-django-celery-beat
-redis
-gql
-```
-
 ---
 
-### 2. Update Django Settings
+## 2. Run Migrations
 
-In **`crm/settings.py`**, ensure the following:
-
-```python
-INSTALLED_APPS = [
-    # Django default apps...
-    'django_celery_beat',
-]
-
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_BEAT_SCHEDULE = {
-    'generate-crm-report': {
-        'task': 'crm.tasks.generate_crm_report',
-        'schedule': crontab(day_of_week='mon', hour=6, minute=0),
-    },
-}
-```
-
----
-
-### 3. Initialize Celery
-
-* In **`crm/celery.py`**, configure Celery.
-* In **`crm/__init__.py`**, ensure Celery loads automatically.
-
----
-
-### 4. Run Database Migrations
+Apply database migrations:
 
 ```bash
 python manage.py migrate
@@ -75,9 +49,9 @@ python manage.py migrate
 
 ---
 
-### 5. Start Celery Worker
+## 3. Start Celery Worker
 
-Run the Celery worker to process tasks:
+Run the Celery worker in one terminal:
 
 ```bash
 celery -A crm worker -l info
@@ -85,9 +59,9 @@ celery -A crm worker -l info
 
 ---
 
-### 6. Start Celery Beat
+## 4. Start Celery Beat
 
-Run Celery Beat to schedule the weekly report:
+Run Celery Beat in another terminal:
 
 ```bash
 celery -A crm beat -l info
@@ -95,16 +69,49 @@ celery -A crm beat -l info
 
 ---
 
-### 7. Verify Logs
+## 5. Verify Logs
 
-The report will be written to:
+Celery Beat will trigger scheduled tasks, and logs will be written to:
+
+```
+/tmp/crm_report_log.txt
+```
+
+Check logs with:
 
 ```bash
 cat /tmp/crm_report_log.txt
 ```
 
-You should see output similar to:
+Expected sample log:
 
 ```
-2025-08-27 06:00:00 - Report: 50 customers, 200 orders, 1,000,000 revenue
+2025-08-27 06:00:00 - Report: X customers, Y orders, Z revenue
 ```
+
+---
+
+## ⚡ Quick Commands (for local testing)
+
+```bash
+# Install Redis
+sudo apt update && sudo apt install redis-server -y
+sudo service redis-server start
+
+# Verify Redis
+redis-cli ping
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Apply migrations
+python manage.py migrate
+
+# Start Celery worker (Terminal 1)
+celery -A crm worker -l info
+
+# Start Celery Beat (Terminal 2)
+celery -A crm beat -l info
+
+# Verify logs
+cat /tmp/crm_report_log.txt
