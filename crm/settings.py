@@ -35,10 +35,6 @@ INSTALLED_APPS = [
     "alx_backend_graphq",
     "graphhql_crm",
     "alx_backend_graphql_crm",
-    "graphql",
-
-
-    "alx_backend_graphql_crm.apps.AlxBackendGraphqlCrmConfig",
     "django crontab",
     
 ]
@@ -49,7 +45,8 @@ CRONJOBS = [
 
 # GraphQL schema path
 GRAPHENE = {
-    "SCHEMA": "graphql_crm.schema.schema"
+    "SCHEMA": "alx_backend_graphql_crm.schema.schema"
+    
 }
 
 MIDDLEWARE = [
