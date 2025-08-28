@@ -1,5 +1,6 @@
 import graphene
 import crm.schema
+from crm.models import Product
 
 
 class Query(crm.schema.Query, graphene.ObjectType):
