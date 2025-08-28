@@ -1,7 +1,5 @@
 import graphene
 
-import graphene
-
 class Query(graphene.ObjectType):
     # Example field
     hello = graphene.String(default_value="Hello from CRM app!")
@@ -394,3 +392,34 @@ class Query(graphene.ObjectType):
         if order_by:
             qs = qs.order_by(*order_by)
         return qs
+
+
+from .types import ProductType  # Assuming you already defined ProductType
+
+class UpdateLowStockProducts(graphene.Mutation):
+    class Arguments:
+        pass  # No arguments needed
+
+    success = graphene.Boolean()
+    message = graphene.String()
+    updated_products = graphene.List(ProductType)
+
+    def mutate(self, info):
+        low_stock_products = Product.objects.filter(stock__lt=10)
+        updated = []
+        for product in low_stock_products:
+            product.stock += 10
+            product.save()
+            updated.append(product)
+
+        if updated:
+            return UpdateLowStockProducts(
+                success=True,
+                message="Low stock products updated successfully",
+                updated_products=updated
+            )
+        return UpdateLowStockProducts(success=False, message="No products needed updating", updated_products=[])
+
+
+class Mutation(graphene.ObjectType):
+    update_low_stock_products = UpdateLowStockProducts.Field()

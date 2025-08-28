@@ -38,3 +38,5 @@ typing-extensions==4.13.2
 uritemplate==4.1.1
 urllib3==2.2.3
 yarl==1.15.2
+django-crontab
+gql
