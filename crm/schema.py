@@ -395,7 +395,7 @@ class Query(graphene.ObjectType):
 
 
 from .types import ProductType  # Assuming you already defined ProductType
-
+from crm.models import Product
 class UpdateLowStockProducts(graphene.Mutation):
     class Arguments:
         pass  # No arguments needed
