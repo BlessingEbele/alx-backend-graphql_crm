@@ -39,6 +39,14 @@ INSTALLED_APPS = [
 
 
     "alx_backend_graphql_crm.apps.AlxBackendGraphqlCrmConfig",
+    "django crontab",
+    
+]
+
+CRONJOBS = [
+    ('*/5 * * * *', 'crm.cron.log_crm_heartbeat'),
+]
+
 
 ]
 

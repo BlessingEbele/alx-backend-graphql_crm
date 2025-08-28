@@ -44,6 +44,12 @@ INSTALLED_APPS = [
     'crm',
 
     "django_filters",
+    "django crontab",
+    
+]
+
+CRONJOBS = [
+    ('*/5 * * * *', 'crm.cron.log_crm_heartbeat'),
 ]
 
 # GraphQL schema path
