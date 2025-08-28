@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     "alx_backend_graphq",
     "graphhql_crm",
     "alx_backend_graphql_crm",
-    "django crontab",
+    "django_crontab",
     
 ]
 
